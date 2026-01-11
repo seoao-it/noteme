@@ -108,7 +108,6 @@ export default function ProtectionLayout(props: ProtectionLayoutProps) {
     };
     const getPageLabel = () => {
         const item = labels.find(e => e?.key == pathname);
-        console.log("route = " + pathname)
         if (item) {
             setPageTitle(item.label);
         }
