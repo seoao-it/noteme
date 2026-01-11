@@ -1,9 +1,9 @@
 'use client';
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Card, Checkbox, Flex, Form, Image, Input, Row, theme , Typography } from "antd";
+import { Button, Card, Checkbox, Col, Flex, Form, Image, Input, Row, theme, Typography } from "antd";
 
 const { Title, Text } = Typography;
-const {useToken} = theme;
+const { useToken } = theme;
 
 export default function SignIn() {
     const [form] = Form.useForm();
@@ -16,45 +16,55 @@ export default function SignIn() {
             className={`w-[100vw] min-h-[100vh] bg-[${token.colorPrimary}]`}
         >
             <Card
-                className="min-w-[800px]"
+                // className="md:min-w-[800px] w-full"
             >
-                <Title 
-                level={3}
-                className="mt-10"
+                <Title
+                    level={3}
+                    className="mt-10"
                 >Đăng nhập</Title>
                 <Row
                     justify="space-between"
                     className="mt-10"
+                    gutter={24}
                 >
-                    <Form
-                        form={form}
-                        requiredMark={false}
+                    <Col
+                        xs={24}
+                        md={12}
                     >
-
-                        <Form.Item>
-                            <Input placeholder="Tên đăng nhập" prefix={<UserOutlined />} />
-                        </Form.Item>
-                        <Form.Item>
-                            <Input.Password prefix={<LockOutlined />} />
-                        </Form.Item>
-                        <Form.Item>
-                            <Checkbox>
-                                Lưu đăng nhập
-                            </Checkbox>
-                        </Form.Item>
-
-                        <Button
-                            type="primary"
-                            className="w-full"
+                        <Form
+                            form={form}
+                            requiredMark={false}
                         >
-                            Đăng nhập
-                        </Button>
-                    </Form>
-                    <Image
-                        className="max-w-[400px] max-h-[400px] md:hidden"
-                        preview={false}
-                        alt="login"
-                        src="/assets/images/login-side.png" />
+
+                            <Form.Item>
+                                <Input placeholder="Tên đăng nhập" prefix={<UserOutlined />} />
+                            </Form.Item>
+                            <Form.Item>
+                                <Input.Password prefix={<LockOutlined />} />
+                            </Form.Item>
+                            <Form.Item>
+                                <Checkbox>
+                                    Lưu đăng nhập
+                                </Checkbox>
+                            </Form.Item>
+
+                            <Button
+                                type="primary"
+                                className="w-full"
+                            >
+                                Đăng nhập
+                            </Button>
+                        </Form>
+                    </Col>
+                    <Col
+                        xs={0}
+                        sm={12}
+                    >
+                        <Image
+                            preview={false}
+                            alt="login"
+                            src="/assets/images/login-side.png" />
+                    </Col>
                 </Row>
             </Card>
         </Flex>
