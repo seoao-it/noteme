@@ -2,11 +2,12 @@
 
 import { AppstoreOutlined, AuditOutlined, BellOutlined, CheckSquareOutlined, FundProjectionScreenOutlined, OrderedListOutlined, ScheduleOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Form, Input, Layout, Popover, Row, Typography, theme, Menu } from "antd";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Notification } from "./components/notification";
 import type { GetProps, MenuProps } from 'antd';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
+import { usePathname, useRouter } from 'next/navigation';
 
 type ProtectionLayoutProps = {
     children: ReactNode
@@ -42,14 +43,38 @@ const items: MenuItem[] = [
         icon: <OrderedListOutlined />
     }
 ]
+const labels: any[] = [
+    {
+        key: '/dashboard',
+        label: "Tổng quan"
+    },
+    {
+        key: '/progress',
+        label: "Tiến độ công việc"
+    },
+    {
+        key: '/category',
+        label: "Trạng thái"
+    },
+    {
+        key: '/project',
+        label: "Dự án"
+    },
+    {
+        key: '/task',
+        label: "Công việc"
+    }
+]
 export default function ProtectionLayout(props: ProtectionLayoutProps) {
-    const [pageTitle, setPageTitle] = useState("Dashboard");
+    const [pageTitle, setPageTitle] = useState("Tổng quan");
     const [openNofication, setOpenNofication] = useState(false);
     const [dayOfWeek, setDayOfWeek] = useState(dayjs().format('dddd'));
     const [datetime, setDateTime] = useState(dayjs().format('DD/MM/YYYY'));
     const fullname = "Giàng Seo Áo";
     const email = "seoao.contact@gmail.com";
     const { token } = theme.useToken();
+    const pathname = usePathname();
+    const router = useRouter();
     const headerStyle: React.CSSProperties = {
         textAlign: 'center',
         color: '#000',
@@ -79,8 +104,19 @@ export default function ProtectionLayout(props: ProtectionLayoutProps) {
     type SearchProps = GetProps<typeof Input.Search>;
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
     const onSelectMenu: MenuProps['onClick'] = (e) => {
-        console.log('click ', e);
+        router.push(e.key);
     };
+    const getPageLabel = () => {
+        const item = labels.find(e => e?.key == pathname);
+        console.log("route = " + pathname)
+        if (item) {
+            setPageTitle(item.label);
+        }
+    }
+
+    useEffect(() => {
+        getPageLabel();
+    })
     return (
         <Layout className="h-[100vh]">
             <Header style={headerStyle} className="z-20">
