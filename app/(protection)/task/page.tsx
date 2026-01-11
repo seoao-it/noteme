@@ -117,7 +117,7 @@ export default function Task() {
                         label: e.name,
                     }))}
                 />
-            <Table rowKey="id" dataSource={data} columns={columns} />
+            <Table rowKey="id" dataSource={data} columns={columns} className="mt-3"/>
             <Drawer
                 title={title}
                 closable={{ 'aria-label': 'Close Button' }}
