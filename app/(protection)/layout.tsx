@@ -1,6 +1,6 @@
 'use client';
 
-import { AppstoreOutlined, AuditOutlined, BellOutlined, FundProjectionScreenOutlined, OrderedListOutlined, ScheduleOutlined, UserOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, AuditOutlined, BellOutlined, CheckSquareOutlined, FundProjectionScreenOutlined, OrderedListOutlined, ScheduleOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Form, Input, Layout, Popover, Row, Typography, theme, Menu } from "antd";
 import { ReactNode, useState } from "react";
 import { Notification } from "./components/notification";
@@ -20,6 +20,11 @@ const items: MenuItem[] = [
         key: 'dashboard',
         label: "Tổng quan",
         icon: <AppstoreOutlined />
+    },
+    {
+        key: 'progress',
+        label: "Tiến độ công việc",
+        icon: <CheckSquareOutlined />
     },
     {
         key: 'category',
