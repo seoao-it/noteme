@@ -1,6 +1,6 @@
 'use client';
-import { FundProjectionScreenOutlined, SwapOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Drawer, Modal, Row, Input, Typography, Table } from "antd";
+import { FundProjectionScreenOutlined, RetweetOutlined, ScheduleOutlined, SolutionOutlined } from "@ant-design/icons";
+import { Button, Card, Col, Drawer, Modal, Row, Input, Typography, Table, Statistic, Radio } from "antd";
 import { useState } from "react";
 import type { ChangeEvent } from "react";
 import type { TableColumnsType, TableProps } from 'antd';
@@ -14,6 +14,17 @@ type ProjectType = {
     code: string,
     name: string
 }
+
+type TaskType = {
+    id: string,
+    sortOrder: number,
+    code: string,
+    name: string,
+    deadline: string,
+    isProgress: boolean,
+    isDone: boolean
+}
+
 const projects: ProjectType[] = [
     {
         id: "1",
@@ -34,6 +45,36 @@ const projects: ProjectType[] = [
         name: "Học tiếng anh"
     },
 ]
+
+const tasks: TaskType[] = [
+    {
+        id: "1",
+        sortOrder: 1,
+        code: "Task1",
+        name: "Công việc 1",
+        deadline: "01/01/2026",
+        isProgress: true,
+        isDone: false
+    },
+    {
+        id: "1",
+        sortOrder: 2,
+        code: "Task2",
+        name: "Công việc ",
+        deadline: "01/01/2026",
+        isProgress: false,
+        isDone: false
+    },
+    {
+        id: "1",
+        sortOrder: 3,
+        code: "Task2",
+        name: "Công việc ",
+        deadline: "01/01/2026",
+        isProgress: false,
+        isDone: false
+    }
+]
 export default function Progress() {
     const [openSearchProject, setOpenSearchProject] = useState(false);
     const [currentProject, setCurrentProject] = useState<ProjectType | undefined>(undefined);
@@ -44,14 +85,40 @@ export default function Progress() {
         { title: 'Ký hiệu', dataIndex: 'code', key: 'code' },
         { title: 'Tên dự án', dataIndex: 'name', key: 'name' },
     ]
-    const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-        setCurrentProject(currentProject);
+    const onSelectChange = (
+        selectedRowKeys: React.Key[],
+        selectedRows: ProjectType[]
+    ) => {
+        setCurrentProject(selectedRows[0]);
     };
     const projectRowSelection: TableRowSelection<ProjectType> = {
+        type: "radio",
         selectedRowKeys: currentProject ? [currentProject.id] : [],
         onChange: onSelectChange,
     };
+
+    const taskColums: TableColumnsType<ProjectType> = [
+        { title: 'STT', dataIndex: 'sortOrder', key: 'sortOrder' },
+        { title: 'Ký hiệu', dataIndex: 'code', key: 'code' },
+        { title: 'Tên công việc', dataIndex: 'name', key: 'name' },
+        { title: 'Thời hạn', dataIndex: 'deadline', key: 'deadline' },
+        {
+        title: 'Đang thực hiện', key: 'isInProgress', render: (_, record) => (
+                <Row
+                    justify='center'
+                >
+                    <Radio />
+                </Row>
+            )
+        },
+        { title: 'Hoàn thành', key: 'isDone', render: (_, record) => (
+                <Row
+                    justify='center'
+                >
+                    <Radio />
+                </Row>
+            ) },
+    ]
     return (
         <>
             <Row
@@ -65,15 +132,16 @@ export default function Progress() {
                     <Card>
                         <Row>
                             <Title level={3}>
-                                Tiến độ công việc
+                                {currentProject?.name ?? "Tên dự án"}
                             </Title>
                             <Button
                                 className="mx-3"
                                 onClick={() => setOpenSearchProject(true)}
                             >
-                                <SwapOutlined />
+                                <RetweetOutlined />
                             </Button>
                         </Row>
+                        <Table rowKey="id" columns={taskColums} dataSource={tasks} />
                     </Card>
                 </Col>
                 <Col
@@ -84,6 +152,34 @@ export default function Progress() {
                         <Title level={3}>
                             {currentProject?.name ?? "Tên dự án"}
                         </Title>
+                        <Row
+                            gutter={24}
+                        >
+                            <Col>
+                                <Card variant="borderless">
+                                    <Statistic
+                                        title="Chưa thực hiện"
+                                        value={15}
+                                        precision={0}
+                                        styles={{ content: { color: '#cf1322' } }}
+                                        prefix={<SolutionOutlined />}
+                                    // suffix="%"
+                                    />
+                                </Card>
+                            </Col>
+                            <Col>
+                                <Card variant="borderless">
+                                    <Statistic
+                                        title="Hoàn thành"
+                                        value={20}
+                                        precision={0}
+                                        styles={{ content: { color: '#3f8600' } }}
+                                        prefix={<ScheduleOutlined />}
+                                    // suffix="%"
+                                    />
+                                </Card>
+                            </Col>
+                        </Row>
                     </Card>
                 </Col>
             </Row>
